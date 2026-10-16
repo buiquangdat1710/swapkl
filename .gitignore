@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+ext/
+data/
+results/*
+!results/perbench/
+!results/perbench/ksweep.csv
+!results/swk_ablate/
+!results/swk_ablate/ksweep_ablate.csv
+figures/
+logs/

@@ -1,0 +1,18 @@
+diff --git a/swaa_patch/hack_vllm_0110_swaa.py b/swaa_patch/hack_vllm_0110_swaa.py
+index b3ba90e..e936458 100644
+--- a/swaa_patch/hack_vllm_0110_swaa.py
++++ b/swaa_patch/hack_vllm_0110_swaa.py
+@@ -489,7 +489,12 @@ class LLMSWAA(LLM):
+ 
+         self.model_config = self.llm_engine.model_config
+         self.processor = self.llm_engine.processor
+-        self.io_processor = self.llm_engine.io_processor
++        if hasattr(self.llm_engine, 'io_processor'):
++            self.io_processor = self.llm_engine.io_processor
++        else:  # vLLM 0.11.0 release: LLM.__init__ tự tạo io_processor
++            from vllm.plugins.io_processors import get_io_processor
++            self.io_processor = get_io_processor(self.llm_engine.vllm_config,
++                                                 self.llm_engine.model_config.io_processor_plugin)
+ 
+ 
+ class LLMEngineSWAA(LLMEngine):
